@@ -1,0 +1,16 @@
+services:
+  catalog.api:
+    build:
+      context: D:\Source\Ecommerce\Ecommerce
+      dockerfile: Catalog.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: catalogapi
+    ports:
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\HungDangHong\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\HungDangHong\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+version: '3.4'
