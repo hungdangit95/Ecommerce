@@ -1,3 +1,4 @@
+using Discount.Api.Extension;
 using Discount.Api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,5 +25,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MigrationData<Program>();
 app.Run();
+
+
+
