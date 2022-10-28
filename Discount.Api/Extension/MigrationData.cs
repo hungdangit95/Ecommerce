@@ -4,7 +4,7 @@ namespace Discount.Api.Extension
 {
     public static class WebExtesion
     {
-        public static void MigrationData<TContext>(this WebApplication app)
+        public static void MigrationData<TContext>(this WebApplication app, int? retryForAvailability = 0)
         {
                  using (var scope = app.Services.CreateScope())
                 try
@@ -17,7 +17,8 @@ namespace Discount.Api.Extension
                     {
                         logger.LogInformation("Migrating postresql database.");
 
-                        using var connection = new NpgsqlConnection("Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;");
+                        using var connection = new NpgsqlConnection
+                        (configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
                         connection.Open();
 
                         using var command = new NpgsqlCommand
@@ -46,12 +47,12 @@ namespace Discount.Api.Extension
                     {
                         logger.LogError(ex, "An error occurred while migrating the postresql database");
 
-                        //if (retryForAvailability < 50)
-                        //{
-                        //    retryForAvailability++;
-                        //    System.Threading.Thread.Sleep(2000);
-                        //    MigrateDatabase<TContext>(host, retryForAvailability);
-                        //}
+                        if (retryForAvailability < 50)
+                        {
+                            retryForAvailability++;
+                            System.Threading.Thread.Sleep(2000);
+                            MigrationData<TContext>(app, retryForAvailability);
+                        }
                     }
 
                 }
