@@ -17,7 +17,7 @@ namespace Discount.Grpc.Extension
                     {
                         logger.LogInformation("Migrating postresql database.");
 
-                        using var connection = new NpgsqlConnection("Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;");
+                        using var connection = new NpgsqlConnection("Server=localhost;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;");
                         connection.Open();
 
                         using var command = new NpgsqlCommand
